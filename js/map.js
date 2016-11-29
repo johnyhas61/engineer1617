@@ -1,3 +1,6 @@
+/*
+Auteur: John Ypma
+*/
 function initMap() {
         var multiPolygonStyle = new ol.style.Style({
                     stroke: new ol.style.Stroke({
@@ -69,7 +72,7 @@ function initMap() {
         data: serviceName
     })
     .done(function(data){
-        var theFeatures = new ol.format.GeoJSON().readFeatures(data);
+        var theFeatures = new ol.format.GeoJSON().readFeatures(data, {featureProjection: 'EPSG:3857'});  // conversie naar web mercator
         console.log(theFeatures);
         vectorSource.addFeatures(theFeatures);
     })
