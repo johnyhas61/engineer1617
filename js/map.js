@@ -16,21 +16,8 @@ function initMap() {
             source: vectorSource,
             style: multiPolygonStyle
             });
-    
-    var wmsSource = new ol.source.TileWMS({
-        url: 'http://geoserver.has.nl/geoserver/demonstratie/wms',
-        params: {
-            'LAYERS': 'demonstratie:nl-prov',
-            'TILED': true
-        },
-        serverType: 'geoserver'
-    })
-
-
-    var myWMSlayer = new ol.layer.Tile({
-        source: wmsSource
-    });
-    
+ 
+     
     var view = new ol.View({
             center: ol.proj.fromLonLat([5.0, 52.0]),
             zoom: 1
@@ -42,7 +29,6 @@ function initMap() {
             new ol.layer.Tile({
                 source: new ol.source.OSM()
             }),
-            myWMSlayer,
             vectorLayer
         ],
         view: view
@@ -80,3 +66,29 @@ function initMap() {
         console.log("Het is niet gelukt");
     });
 }
+
+function loadProvincie()
+{
+    map.removeLayer(myWMSlayer);
+    var selectedprov = $('#provselect').val();
+
+   var wmsSource = new ol.source.TileWMS({
+        url: 'http://geoserver.has.nl/geoserver/demonstratie/wms',
+        params: {
+            'LAYERS': 'demonstratie:geefprovincie',
+            'VIEWPARAMS': 'provnaam:'+selectedprov,
+            'TILED': true
+        },
+        serverType: 'geoserver'
+    })
+
+
+    myWMSlayer = new ol.layer.Tile({
+        source: wmsSource
+    });
+    
+    map.addLayer(myWMSlayer);
+    
+}
+
+
