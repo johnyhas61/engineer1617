@@ -1,9 +1,13 @@
 function fillSelect()
 {
-    var serviceName = {url: 'http://geoserver.has.nl/geoserver/demonstratie/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=demonstratie:lijstprovincies&outputFormat=application%2Fjson'};
+    var username = $('#username').val();
+    var password = $('#password').val();
+    var serviceName = {url: 'http://geoserver.has.nl/geoserver/demonstratie/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=demonstratie:lijstprovincies&outputFormat=application%2Fjson', 
+                      username: username,
+                      password: password};
     
     $.ajax({
-        url: 'php/geoproxy.php',
+        url: 'php/geoproxycurl.php',
         dataType: 'json',
         method: 'POST',
         data: serviceName
@@ -15,5 +19,8 @@ function fillSelect()
         });
         $('#provselect').html(optionstext);
     })
+    .fail(function(){
+        alert ("DE username password combinatie is fout");
+    });
 
 }

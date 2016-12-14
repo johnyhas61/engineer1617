@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    fillSelect();
+//    fillSelect();
     initMap();
     $('#provselect').on('change', function(event){
         loadProvincie();
