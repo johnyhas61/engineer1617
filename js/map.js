@@ -20,7 +20,7 @@ function initMap() {
 
     var view = new ol.View({
         center: ol.proj.fromLonLat([5.0, 52.0]),
-        zoom: 7
+        zoom: 2
     })
 
     map = new ol.Map({
@@ -46,6 +46,34 @@ function initMap() {
             $('#info').html('<iframe seamless src="' + url + '"></iframe>');
         }
     });
+
+
+    var startIndex = 0;
+    var stepSize = 10;
+    var numerOfFeatures = 0;
+
+    var serviceName = {
+        url: 'http://gmd.has.nl:8080/geoserver/opengeo/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=opengeo:countries&outputFormat=application%2Fjson&startIndex=0&count=1'
+    };
+
+    $.ajax({
+            url: 'php/geoproxycurl.php',
+            dataType: 'json',
+            method: 'POST',
+            data: serviceName
+        })
+        .done(function(data) {
+            numberOfFeatures = data.totalFeatures;
+            console.log(numberOfFeatures);
+            while (startIndex < numberOfFeatures) {
+                getWFSFeaturesInSteps(startIndex, stepSize, numberOfFeatures);
+                startIndex += stepSize;
+            }
+
+        })
+        .fail(function() {
+            console.log("Het is niet gelukt");
+        });
 
 
 

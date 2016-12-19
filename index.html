@@ -13,6 +13,7 @@ versie 0.1 Initiele versie
         <title>Engineer 2</title>
         <link href="openlayers/ol.css" rel="stylesheet" />
         <link href="css/engineer.css" rel="stylesheet" />
+        <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
     </head>
     <body>
         <!-- Dit is de ID waarin de kaart komt-->
@@ -25,7 +26,10 @@ versie 0.1 Initiele versie
             <button onclick="fillSelect()">Vul select</button>
         </div>
         <!-- Dit is de ID waarin de GetFeature info tekst getoonb wordt na klikken op de kaart -->
-        <div id="info"></div>
+        <div id="info">  <div class="w3-progress-container">
+    <div id="myBar" class="w3-progressbar w3-green" style="width:0%">Laden van data</div>
+  </div>
+</div>
         <script src="jquery/jquery-3.1.1.min.js"></script>
         <script src="openlayers/ol.js"></script>
         <script src="js/globals.js"></script>
