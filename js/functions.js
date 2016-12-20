@@ -26,7 +26,7 @@ function getWFSFeaturesInSteps(startIndex, stepSize, numberOfFeatures) {
     serviceName = {
         url: 'http://gmd.has.nl:8080/geoserver/opengeo/ows?service=WFS&version=2.0.0&request=GetFeature&typeName=opengeo:countries&outputFormat=application%2Fjson&startIndex=' + startIndex + '&count=' + stepSize
     };
-    console.log(serviceName);
+//    console.log(serviceName);
     $.ajax({
         url: 'php/geoproxy.php'
         , dataType: 'json'
@@ -43,7 +43,7 @@ function getWFSFeaturesInSteps(startIndex, stepSize, numberOfFeatures) {
             $('#myBar').width(progressBarValue + '%');
            $('.w3-progress-container').fadeOut(1000);    
         } 
-        console.log(progressBarValue);
+//        console.log(progressBarValue);
         $('#myBar').width(progressBarValue + '%');
     }).fail(function () {
         console.log("Het is niet gelukt");

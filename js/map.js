@@ -20,7 +20,7 @@ function initMap() {
 
     var view = new ol.View({
         center: ol.proj.fromLonLat([5.0, 52.0]),
-        zoom: 2
+        zoom: 7
     })
 
     map = new ol.Map({
@@ -64,7 +64,7 @@ function initMap() {
         })
         .done(function(data) {
             numberOfFeatures = data.totalFeatures;
-            console.log(numberOfFeatures);
+ //           console.log(numberOfFeatures);
             while (startIndex < numberOfFeatures) {
                 getWFSFeaturesInSteps(startIndex, stepSize, numberOfFeatures);
                 startIndex += stepSize;
@@ -82,7 +82,7 @@ function initMap() {
     };
 
     $.ajax({
-            url: 'php/geoproxy.php',
+            url: 'php/geoproxycurl.php',
             dataType: 'json',
             method: 'POST',
             data: serviceName
@@ -92,6 +92,53 @@ function initMap() {
                 featureProjection: 'EPSG:3857'
             }); // conversie naar web mercator
             vectorSource.addFeatures(theFeatures);
+        })
+        .fail(function() {
+            console.log("Het is niet gelukt");
+        });
+
+
+
+    var vectorSource2 = new ol.source.Vector();
+    var vectorLayer2 = new ol.layer.Vector({
+        source: vectorSource2
+    });
+    map.addLayer(vectorLayer2);
+
+    var serviceName2 = {
+        url: 'http://gmd.has.nl/geoserver/scar/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=scar:sporen&outputFormat=application%2Fjson'
+    };
+
+    $.ajax({
+            url: 'php/geoproxycurl.php',
+            dataType: 'json',
+            method: 'POST',
+            data: serviceName2
+        })
+        .done(function(data) {
+            var theFeatures = new ol.format.GeoJSON().readFeatures(data, {
+                featureProjection: 'EPSG:3857'
+            }); // conversie naar web mercator
+            var point1;
+            var point2;
+            var newfeature;
+            $.each(theFeatures, function(i, feature) {
+                if (i == 0) {
+                    console.log(feature.getGeometry().getCoordinates());
+                    point1 = feature.getGeometry().getCoordinates();
+                } else {
+                    console.log(feature.getGeometry().getCoordinates());
+                    point2 = feature.getGeometry().getCoordinates();
+                    var line = new ol.geom.LineString([point1, point2]);
+                    console.log(line.getLength());
+                    newfeature = new ol.Feature({
+                        geometry: line
+                    });
+                    vectorSource2.addFeature(newfeature);
+                    point1 = point2;
+                }
+            });
+            //            vectorSource2.addFeatures(theFeatures);
         })
         .fail(function() {
             console.log("Het is niet gelukt");
